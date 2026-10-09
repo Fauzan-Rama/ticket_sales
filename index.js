@@ -18,6 +18,9 @@ const cors = require(`cors`)
 /** open CORS policy */
 app.use(cors())
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
+
 /** define all routes */
 const userRoute = require(`./routes/user.route`)
 const seatRoute = require(`./routes/seat.routes`)
@@ -34,6 +37,9 @@ app.use("/diskon", diskonRoute)
 app.use(`/event`, eventRoute)
 app.use(`/ticket`, ticketRoute)
 app.use('/ongkir', ongkirRoute) // 2. Tambahkan prefix /ongkir di sini
+
+// Display Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 /** route to access uploaded file */
 app.use(express.static(__dirname))
