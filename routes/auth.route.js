@@ -1,32 +1,30 @@
 
-/** load library express */
-const express = require(`express`);
+/** Load library Express */
+const express = require('express');
 
-/** initiate object that instance of express */
+/** Initiate Express app */
 const app = express();
 
-/** allow to read 'request' with json type */
+/** Allow JSON request body */
 app.use(express.json());
 
-/** load function authentication from auth's controller */
-const { authenticate } = require(`../controllers/auth.controller`);
+/** Load authentication controller */
+const { authenticate } = require('../controllers/auth.controller');
 
 /**
  * @swagger
  * /auth:
  *   post:
  *     summary: Authenticate user
- *     description: Authenticate a user and return the authentication result.
+ *     description: Login to obtain an authentication token.
  *     tags: [Authentication]
+ *     security: []
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - username
- *               - password
  *             properties:
  *               username:
  *                 type: string
@@ -35,6 +33,9 @@ const { authenticate } = require(`../controllers/auth.controller`);
  *                 type: string
  *                 format: password
  *                 example: password123
+ *             required:
+ *               - username
+ *               - password
  *     responses:
  *       200:
  *         description: Authentication successful
@@ -45,7 +46,7 @@ const { authenticate } = require(`../controllers/auth.controller`);
  *       500:
  *         description: Internal server error
  */
-app.post(`/`, authenticate);
+app.post('/', authenticate);
 
-/** export app in order to load in another file */
+/** Export app */
 module.exports = app;

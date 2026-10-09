@@ -1,45 +1,39 @@
 
 const express = require('express');
-
 const app = express();
 
 const seatController = require('../controllers/seat.controller');
-
 const { authorize } = require('../controllers/auth.controller');
-
 const { IsAdmin } = require('../middlewares/role-validation');
 
+// GET all seats
 /**
  * @swagger
  * /seat:
  *   get:
  *     summary: Get all seats
  *     tags: [Seat]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: List of seats retrieved successfully
+ *         description: Seats retrieved successfully
  *       401:
  *         description: Unauthorized
  */
-app.get("/", authorize, seatController.getAllSeats);
+app.get('/', authorize, seatController.getAllSeats);
 
+// Find seat by key
 /**
  * @swagger
  * /seat/{key}:
  *   get:
- *     summary: Find a seat by key
+ *     summary: Find seat by key
  *     tags: [Seat]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: key
  *         required: true
  *         schema:
  *           type: string
- *         description: Seat key
  *     responses:
  *       200:
  *         description: Seat retrieved successfully
@@ -48,16 +42,15 @@ app.get("/", authorize, seatController.getAllSeats);
  *       404:
  *         description: Seat not found
  */
-app.get("/:key", authorize, seatController.findSeat);
+app.get('/:key', authorize, seatController.findSeat);
 
+// Add seat (Admin only)
 /**
  * @swagger
  * /seat:
  *   post:
  *     summary: Add a new seat
  *     tags: [Seat]
- *     security:
- *       - bearerAuth: []
  *     description: Admin access required.
  *     requestBody:
  *       required: true
@@ -69,23 +62,20 @@ app.get("/:key", authorize, seatController.findSeat);
  *     responses:
  *       201:
  *         description: Seat created successfully
- *       400:
- *         description: Invalid request
  *       401:
  *         description: Unauthorized
  *       403:
  *         description: Admin access required
  */
-app.post("/", authorize, IsAdmin, seatController.addSeat);
+app.post('/', authorize, IsAdmin, seatController.addSeat);
 
+// Update seat (Admin only)
 /**
  * @swagger
  * /seat/{id}:
  *   put:
  *     summary: Update a seat
  *     tags: [Seat]
- *     security:
- *       - bearerAuth: []
  *     description: Admin access required.
  *     parameters:
  *       - in: path
@@ -93,7 +83,6 @@ app.post("/", authorize, IsAdmin, seatController.addSeat);
  *         required: true
  *         schema:
  *           type: string
- *         description: Seat ID
  *     requestBody:
  *       required: true
  *       content:
@@ -111,16 +100,15 @@ app.post("/", authorize, IsAdmin, seatController.addSeat);
  *       404:
  *         description: Seat not found
  */
-app.put("/:id", authorize, IsAdmin, seatController.updateSeat);
+app.put('/:id', authorize, IsAdmin, seatController.updateSeat);
 
+// Delete seat (Admin only)
 /**
  * @swagger
  * /seat/{id}:
  *   delete:
  *     summary: Delete a seat
  *     tags: [Seat]
- *     security:
- *       - bearerAuth: []
  *     description: Admin access required.
  *     parameters:
  *       - in: path
@@ -128,7 +116,6 @@ app.put("/:id", authorize, IsAdmin, seatController.updateSeat);
  *         required: true
  *         schema:
  *           type: string
- *         description: Seat ID
  *     responses:
  *       200:
  *         description: Seat deleted successfully
@@ -139,48 +126,44 @@ app.put("/:id", authorize, IsAdmin, seatController.updateSeat);
  *       404:
  *         description: Seat not found
  */
-app.delete("/:id", authorize, IsAdmin, seatController.deleteSeat);
+app.delete('/:id', authorize, IsAdmin, seatController.deleteSeat);
 
+// Get seats by event ID
 /**
  * @swagger
  * /seat/event/{eventID}:
  *   get:
  *     summary: Get seats by event ID
  *     tags: [Seat]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: eventID
  *         required: true
  *         schema:
  *           type: string
- *         description: Event ID
  *     responses:
  *       200:
- *         description: Seats for the event retrieved successfully
+ *         description: Event seats retrieved successfully
  *       401:
  *         description: Unauthorized
  *       404:
  *         description: Event or seats not found
  */
-app.get("/event/:eventID", authorize, seatController.getSeatByEvent);
+app.get('/event/:eventID', authorize, seatController.getSeatByEvent);
 
+// Update seat status
 /**
  * @swagger
  * /seat/status/{id}:
  *   put:
  *     summary: Update seat status
  *     tags: [Seat]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: Seat ID
  *     requestBody:
  *       required: true
  *       content:
@@ -191,13 +174,11 @@ app.get("/event/:eventID", authorize, seatController.getSeatByEvent);
  *     responses:
  *       200:
  *         description: Seat status updated successfully
- *       400:
- *         description: Invalid request
  *       401:
  *         description: Unauthorized
  *       404:
  *         description: Seat not found
  */
-app.put("/status/:id", authorize, seatController.updateSeatStatus);
+app.put('/status/:id', authorize, seatController.updateSeatStatus);
 
 module.exports = app;

@@ -1,45 +1,39 @@
 
 const express = require('express');
-
 const app = express();
 
 const eventController = require('../controllers/event.controller');
-
 const { authorize } = require('../controllers/auth.controller');
-
 const { IsAdmin } = require('../middlewares/role-validation');
 
+// GET all events
 /**
  * @swagger
  * /event:
  *   get:
  *     summary: Get all events
  *     tags: [Event]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: List of events retrieved successfully
+ *         description: Events retrieved successfully
  *       401:
  *         description: Unauthorized
  */
-app.get("/", authorize, eventController.getAllEvent);
+app.get('/', authorize, eventController.getAllEvent);
 
+// Search events
 /**
  * @swagger
  * /event/search/{key}:
  *   get:
  *     summary: Search or filter events
  *     tags: [Event]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: key
  *         required: true
  *         schema:
  *           type: string
- *         description: Search keyword
  *     responses:
  *       200:
  *         description: Matching events retrieved successfully
@@ -48,23 +42,21 @@ app.get("/", authorize, eventController.getAllEvent);
  *       404:
  *         description: No matching events found
  */
-app.get("/search/:key", authorize, eventController.findEvent);
+app.get('/search/:key', authorize, eventController.findEvent);
 
+// GET event by ID
 /**
  * @swagger
  * /event/{id}:
  *   get:
- *     summary: Get an event by ID
+ *     summary: Get event by ID
  *     tags: [Event]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: Event ID
  *     responses:
  *       200:
  *         description: Event retrieved successfully
@@ -73,16 +65,15 @@ app.get("/search/:key", authorize, eventController.findEvent);
  *       404:
  *         description: Event not found
  */
-app.get("/:id", authorize, eventController.getEventByID);
+app.get('/:id', authorize, eventController.getEventByID);
 
+// POST new event (Admin only)
 /**
  * @swagger
  * /event:
  *   post:
  *     summary: Add a new event
  *     tags: [Event]
- *     security:
- *       - bearerAuth: []
  *     description: Admin access required.
  *     requestBody:
  *       required: true
@@ -94,23 +85,20 @@ app.get("/:id", authorize, eventController.getEventByID);
  *     responses:
  *       201:
  *         description: Event created successfully
- *       400:
- *         description: Invalid request
  *       401:
  *         description: Unauthorized
  *       403:
  *         description: Admin access required
  */
-app.post("/", authorize, IsAdmin, eventController.addEvent);
+app.post('/', authorize, IsAdmin, eventController.addEvent);
 
+// PUT update event (Admin only)
 /**
  * @swagger
  * /event/{id}:
  *   put:
  *     summary: Update an event
  *     tags: [Event]
- *     security:
- *       - bearerAuth: []
  *     description: Admin access required.
  *     parameters:
  *       - in: path
@@ -118,7 +106,6 @@ app.post("/", authorize, IsAdmin, eventController.addEvent);
  *         required: true
  *         schema:
  *           type: string
- *         description: Event ID
  *     requestBody:
  *       required: true
  *       content:
@@ -129,8 +116,6 @@ app.post("/", authorize, IsAdmin, eventController.addEvent);
  *     responses:
  *       200:
  *         description: Event updated successfully
- *       400:
- *         description: Invalid request
  *       401:
  *         description: Unauthorized
  *       403:
@@ -138,16 +123,15 @@ app.post("/", authorize, IsAdmin, eventController.addEvent);
  *       404:
  *         description: Event not found
  */
-app.put("/:id", authorize, IsAdmin, eventController.updateEvent);
+app.put('/:id', authorize, IsAdmin, eventController.updateEvent);
 
+// DELETE event (Admin only)
 /**
  * @swagger
  * /event/{id}:
  *   delete:
  *     summary: Delete an event
  *     tags: [Event]
- *     security:
- *       - bearerAuth: []
  *     description: Admin access required.
  *     parameters:
  *       - in: path
@@ -155,7 +139,6 @@ app.put("/:id", authorize, IsAdmin, eventController.updateEvent);
  *         required: true
  *         schema:
  *           type: string
- *         description: Event ID
  *     responses:
  *       200:
  *         description: Event deleted successfully
@@ -166,6 +149,6 @@ app.put("/:id", authorize, IsAdmin, eventController.updateEvent);
  *       404:
  *         description: Event not found
  */
-app.delete("/:id", authorize, IsAdmin, eventController.deleteEvent);
+app.delete('/:id', authorize, IsAdmin, eventController.deleteEvent);
 
 module.exports = app;

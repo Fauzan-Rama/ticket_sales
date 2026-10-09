@@ -1,20 +1,17 @@
 
 const express = require('express');
-
 const app = express();
 
 const ticketController = require('../controllers/ticket.controller');
-
 const { authorize } = require('../controllers/auth.controller');
 
+// POST create ticket
 /**
  * @swagger
  * /ticket:
  *   post:
  *     summary: Create a new ticket
  *     tags: [Ticket]
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -30,87 +27,81 @@ const { authorize } = require('../controllers/auth.controller');
  *       401:
  *         description: Unauthorized
  */
-app.post("/", authorize, ticketController.addTicket);
+app.post('/', authorize, ticketController.addTicket);
 
+// GET all tickets
 /**
  * @swagger
  * /ticket:
  *   get:
  *     summary: Get all tickets
  *     tags: [Ticket]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: List of tickets retrieved successfully
+ *         description: Tickets retrieved successfully
  *       401:
  *         description: Unauthorized
  */
-app.get("/", authorize, ticketController.getAllTicket);
+app.get('/', authorize, ticketController.getAllTicket);
 
+// GET tickets belonging to current user
 /**
  * @swagger
  * /ticket/my-tickets:
  *   get:
- *     summary: Get tickets belonging to the current user
+ *     summary: Get my tickets
  *     tags: [Ticket]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: User tickets retrieved successfully
  *       401:
  *         description: Unauthorized
  */
-app.get("/my-tickets", authorize, ticketController.getMyTickets);
+app.get('/my-tickets', authorize, ticketController.getMyTickets);
 
+// GET sales per event
 /**
  * @swagger
  * /ticket/sales-per-event:
  *   get:
- *     summary: Get ticket sales grouped by event
+ *     summary: Get ticket sales per event
  *     tags: [Ticket]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Ticket sales statistics retrieved successfully
  *       401:
  *         description: Unauthorized
  */
-app.get("/sales-per-event", authorize, ticketController.getSalesPerEvent);
+app.get('/sales-per-event', authorize, ticketController.getSalesPerEvent);
 
+// GET top five active events
 /**
  * @swagger
  * /ticket/top5-events:
  *   get:
- *     summary: Get the top five active events by ticket sales
+ *     summary: Get top five active events
  *     tags: [Ticket]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Top five active events retrieved successfully
  *       401:
  *         description: Unauthorized
  */
-app.get("/top5-events", authorize, ticketController.getTop5ActiveEvents);
+app.get('/top5-events', authorize, ticketController.getTop5ActiveEvents);
 
+// GET ticket by ID
 /**
  * @swagger
  * /ticket/{id}:
  *   get:
- *     summary: Get a ticket by ID
+ *     summary: Get ticket by ID
  *     tags: [Ticket]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: Ticket ID
  *     responses:
  *       200:
  *         description: Ticket retrieved successfully
@@ -119,48 +110,44 @@ app.get("/top5-events", authorize, ticketController.getTop5ActiveEvents);
  *       404:
  *         description: Ticket not found
  */
-app.get("/:id", authorize, ticketController.TicketByID);
+app.get('/:id', authorize, ticketController.TicketByID);
 
+// GET tickets by event ID
 /**
  * @swagger
  * /ticket/event/{id}:
  *   get:
  *     summary: Get tickets by event ID
  *     tags: [Ticket]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: Event ID
  *     responses:
  *       200:
- *         description: Tickets for the event retrieved successfully
+ *         description: Event tickets retrieved successfully
  *       401:
  *         description: Unauthorized
  *       404:
  *         description: Event or tickets not found
  */
-app.get("/event/:id", authorize, ticketController.TicketByeventID);
+app.get('/event/:id', authorize, ticketController.TicketByeventID);
 
+// GET tickets by user ID
 /**
  * @swagger
  * /ticket/userID/{id}:
  *   get:
  *     summary: Get tickets by user ID
  *     tags: [Ticket]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: User ID
  *     responses:
  *       200:
  *         description: User tickets retrieved successfully
@@ -169,6 +156,6 @@ app.get("/event/:id", authorize, ticketController.TicketByeventID);
  *       404:
  *         description: User or tickets not found
  */
-app.get("/userID/:id", authorize, ticketController.ticketByuserID);
+app.get('/userID/:id', authorize, ticketController.ticketByuserID);
 
 module.exports = app;
